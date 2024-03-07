@@ -11,7 +11,6 @@ import { throwError } from '@/utils/message/message'
 export const PackageCard = ({ item }) => {
     const user = useSelector(state => state.user)
     const permission_to_create = user.data?.permissions?.includes('package-create');
-    // console.log(user.data.orders)
     useEffect(() => {
         if (getCookie('last_url') === location.href) {
             deleteCookie('last_url');
@@ -21,11 +20,12 @@ export const PackageCard = ({ item }) => {
         setCookie('last_url', location.href);
     }
     const [order, { isLoading, data, isError, error, isSuccess }] = userApiSlice.useOrderMutation();
-    const handleOrder = () => {
+    const handleOrder = (upgrade = false) => {
         order({
             package_id: item.id,
-            success_url: location.origin + '/process-order',
-            cancel_url: location.origin
+            success_url: upgrade ? location.origin + '/process-upgrade' : location.origin + '/process-order',
+            cancel_url: location.origin,
+            upgrade: upgrade
         })
     }
 
@@ -41,6 +41,7 @@ export const PackageCard = ({ item }) => {
             }
         }
     }, [isLoading])
+
     return (
         <div className="package-card p-6 text-center bg-base-3 rounded-2xl">
             <div className="package-header ">
@@ -75,7 +76,7 @@ export const PackageCard = ({ item }) => {
                                 user.data.orders[0].package_id === item?.id ?
                                     <ButtonPrimary disabled={true}>Purchased</ButtonPrimary>
                                     :
-                                    <ButtonPrimary onClick={handleOrder}>{isLoading ? 'Please wait.' : 'Upgrade'}</ButtonPrimary>
+                                    <ButtonPrimary onClick={() => handleOrder(true)}>{isLoading ? 'Please wait.' : 'Upgrade'}</ButtonPrimary>
                                 :
                                 <ButtonPrimary onClick={handleOrder}>{isLoading ? 'Please wait.' : 'Order now'}</ButtonPrimary>
 

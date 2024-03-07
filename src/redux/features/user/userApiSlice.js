@@ -22,23 +22,25 @@ const userApiSlice = createApi({
             })
         }),
         order: builder.mutation({
-            query: ({ package_id, success_url, cancel_url }) => ({
-                url: '/order',
+            query: ({ package_id, success_url, cancel_url, upgrade }) => ({
+                url: upgrade ? '/upgrade-package' : '/order',
                 method: 'POST',
                 body: {
                     package_id: package_id, success_url: success_url, cancel_url: cancel_url
                 }
             })
         }),
+
         verifyOrder: builder.mutation({
-            query: ({ order_id, session_id }) => ({
-                url: '/verify-order',
+            query: ({ order_id, session_id, upgrade }) => ({
+                url: upgrade ? '/verify-upgrade' : '/verify-order',
                 method: 'POST',
                 body: {
                     order_id: order_id, session_id: session_id
                 }
             })
         }),
+
     }),
 
 })
