@@ -1,8 +1,11 @@
+import { DashboardTitle } from '@/components/typography/Typography'
 import React from 'react'
 
 const Orders = () => {
     return (
-        <div>Orders</div>
+        <div>
+            <DashboardTitle>Orders</DashboardTitle>
+        </div>
     )
 }
 

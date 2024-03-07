@@ -71,36 +71,7 @@ const Sidebar = () => {
 
                         {
                             menuList.map((item, index) =>
-                                item.hasSubmenu ?
-                                    <>
-                                        <li key={index} className="px-5">
-                                            <div className="flex flex-row items-center h-8">
-                                                <div className="text-sm font-light tracking-wide text-gray-500">{item.name}</div>
-                                            </div>
-                                        </li>
-                                        {
-                                            item.subMenu.map((sItem, sIndex) =>
-                                                <li key={sIndex}>
-                                                    <Link href={sItem.path} className={`relative flex ${pathName === sItem.path && "!text-gray-800 !bg-gray-50 !border-indigo-500"} flex-row items-center h-11 focus:outline-none  text-gray-600 hover:text-gray-800 hover:bg-gray-50 hover:border-indigo-500 border-l-4 border-transparent  pr-6`}>
-                                                        <span className="inline-flex justify-center items-center ml-4">
-                                                            {sItem.icon}
-                                                        </span>
-                                                        <span className="ml-2 text-sm tracking-wide truncate">{sItem.name}</span>
-                                                    </Link>
-                                                </li>
-                                            )
-                                        }
-                                    </>
-                                    :
-                                    <li key={index}>
-                                        <Link href={item.path} className={`relative flex ${pathName === item.path && "!text-gray-800 !bg-gray-50 !border-indigo-500"} flex-row items-center h-11 focus:outline-none  text-gray-600 hover:text-gray-800 hover:bg-gray-50 hover:border-indigo-500 border-l-4 border-transparent  pr-6`}>
-                                            <span className="inline-flex justify-center items-center ml-4">
-                                                {item.icon}
-                                            </span>
-                                            <span className="ml-2 text-sm tracking-wide truncate">{item.name}</span>
-                                            <span className="px-2 py-0.5 ml-auto text-xs font-medium tracking-wide text-red-500 bg-red-50 rounded-full">1.2k</span>
-                                        </Link>
-                                    </li>
+                                <MenuItem key={index} item={item} index={index} />
 
                             )
                         }
@@ -122,3 +93,41 @@ const Sidebar = () => {
 }
 
 export default Sidebar
+
+const MenuItem = ({ index, item }) => {
+    const pathName = usePathname();
+
+    return (
+        item.hasSubmenu ?
+            <li key={index} className="px-5">
+
+                <div className="flex flex-row items-center h-8">
+                    <div className="text-sm font-light tracking-wide text-gray-500">{item.name}</div>
+                </div>
+
+                {
+                    item.subMenu.map((sItem, sIndex) =>
+
+                        <Link href={sItem.path} className={`relative flex ${pathName === sItem.path && "!text-gray-800 !bg-gray-50 !border-indigo-500"} flex-row items-center h-11 focus:outline-none  text-gray-600 hover:text-gray-800 hover:bg-gray-50 hover:border-indigo-500 border-l-4 border-transparent  pr-6`}>
+                            <span className="inline-flex justify-center items-center ml-4">
+                                {sItem.icon}
+                            </span>
+                            <span className="ml-2 text-sm tracking-wide truncate">{sItem.name}</span>
+                        </Link>
+
+                    )
+                }
+            </li>
+            :
+            <li key={index}>
+                <Link href={item.path} className={`relative flex ${pathName === item.path && "!text-gray-800 !bg-gray-50 !border-indigo-500"} flex-row items-center h-11 focus:outline-none  text-gray-600 hover:text-gray-800 hover:bg-gray-50 hover:border-indigo-500 border-l-4 border-transparent  pr-6`}>
+                    <span className="inline-flex justify-center items-center ml-4">
+                        {item.icon}
+                    </span>
+                    <span className="ml-2 text-sm tracking-wide truncate">{item.name}</span>
+                    <span className="px-2 py-0.5 ml-auto text-xs font-medium tracking-wide text-red-500 bg-red-50 rounded-full">1.2k</span>
+                </Link>
+            </li>
+    )
+
+}
