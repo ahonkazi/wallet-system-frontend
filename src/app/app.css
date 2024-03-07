@@ -1,0 +1,50 @@
+@import url('https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@300;400;500;600;700&family=Roboto+Condensed:ital,wght@0,100..900;1,100..900&display=swap');
+
+
+.app-container {
+    @apply px-4 md:px-[50px] lg:px-[70px] xl:px-[110px];
+}
+
+html {
+    font-size: 16px;
+}
+
+h1 {
+    font-size: 2.986rem !important;
+}
+
+h2 {
+    font-size: 2.488rem !important;
+}
+
+h3 {
+    font-size: 2.074rem !important;
+}
+
+h4 {
+    font-size: 1.728rem !important;
+}
+
+h5 {
+    font-size: 1.44rem !important;
+}
+
+h6 {
+    font-size: 1.2rem !important;
+}
+
+p {
+    font-size: 1.986rem !important;
+}
+
+small {
+    font-size: 0.833rem !important;
+}
+
+.mt-page {
+    @apply mt-[60px];
+}
+
+.mt-wrapper {
+    @apply mt-[30px];
+}
