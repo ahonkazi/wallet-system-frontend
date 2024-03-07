@@ -20,10 +20,16 @@ export const PackageCard = ({ item }) => {
         setCookie('last_url', location.href);
     }
     const [order, { isLoading, data, isError, error, isSuccess }] = userApiSlice.useOrderMutation();
-    const handleOrder = (upgrade = false) => {
+    const handleOrder = (upgrade) => {
+        let url = '';
+        if (upgrade) {
+            url = '/process-upgrade'
+        } else {
+            url = '/process-order'
+        }
         order({
             package_id: item.id,
-            success_url: upgrade ? location.origin + '/process-upgrade' : location.origin + '/process-order',
+            success_url: location.origin + url,
             cancel_url: location.origin,
             upgrade: upgrade
         })
@@ -36,9 +42,10 @@ export const PackageCard = ({ item }) => {
             }
         }
         if (isError) {
-            if (error.status === 409) {
+            if ([404, 401, 409].includes(error.status)) {
                 throwError('error', error.data.message)
             }
+
         }
     }, [isLoading])
 
@@ -72,13 +79,13 @@ export const PackageCard = ({ item }) => {
                         : user.data?.logged_in === true ?
 
 
-                            (user.data.orders.length > 0 && user.data.orders[0].status === 'complete') ?
+                            (user?.data?.orders.length > 0 && user.data.orders[0].status === 'complete') ?
                                 user.data.orders[0].package_id === item?.id ?
                                     <ButtonPrimary disabled={true}>Purchased</ButtonPrimary>
                                     :
                                     <ButtonPrimary onClick={() => handleOrder(true)}>{isLoading ? 'Please wait.' : 'Upgrade'}</ButtonPrimary>
                                 :
-                                <ButtonPrimary onClick={handleOrder}>{isLoading ? 'Please wait.' : 'Order now'}</ButtonPrimary>
+                                <ButtonPrimary onClick={() => handleOrder(false)}>{isLoading ? 'Please wait.' : 'Order now'}</ButtonPrimary>
 
 
                             :

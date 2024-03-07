@@ -15,7 +15,6 @@ const ProcessOrder = () => {
             session_id: params.get('session_id'),
             order_id: params.get('order_id'),
             upgrade: false
-
         })
     }, []);
     useEffect(() => {
@@ -28,6 +27,9 @@ const ProcessOrder = () => {
         }
         if (isError) {
             console.log(error)
+            if (error.status === 404) {
+                router.replace('/')
+            }
         }
     }, [isLoading])
     return (

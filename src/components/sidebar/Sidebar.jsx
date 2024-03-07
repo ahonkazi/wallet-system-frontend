@@ -11,7 +11,6 @@ import userApiSlice from '@/redux/features/user/userApiSlice';
 const Sidebar = () => {
     const user = useSelector(state => state.user);
     const [logout, { isLoading, isSuccess, isError, error }] = userApiSlice.useLogoutMutation();
-
     const menuList = [
         { name: "Orders", path: '/dashboard/orders', permission: 'order-list', icon: <LuPackageOpen />, hasSubmenu: false },
         { name: "Packages", path: '/dashboard/packages', permission: 'package-list', icon: <FaRegFileAlt /> },
