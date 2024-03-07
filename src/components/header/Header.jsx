@@ -32,8 +32,8 @@ const Header = () => {
                             </Link>
                         </li> */}
                         <li className='flex items-center'>
-                            <Link href={'/login'} className='flex btn-primary items-center gap-x-2'>
-                                <ButtonPrimary>Login</ButtonPrimary>
+                            <Link href={'/dashboard'} className='flex btn-primary items-center gap-x-2'>
+                                <ButtonPrimary>Dashboard</ButtonPrimary>
                             </Link>
                         </li>
 
