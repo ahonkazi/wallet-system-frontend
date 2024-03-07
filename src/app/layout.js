@@ -1,5 +1,7 @@
+import ReduxProvider from "@/redux/app/ReduxProvider";
 import "./app.css";
 import "./globals.css";
+import MainLayout from "@/layouts/MainLayout";
 
 export const metadata = {
   title: "Create Next App",
@@ -9,7 +11,13 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body className="bg-base-2 font-base">{children}</body>
+      <body className="bg-base-2 font-base">
+        <ReduxProvider>
+          <MainLayout>
+            {children}
+          </MainLayout>
+        </ReduxProvider>
+      </body>
     </html>
   );
 }

@@ -2,10 +2,10 @@
 import { DashboardTitle } from '@/components/typography/Typography'
 import React from 'react'
 import { BiEdit } from "react-icons/bi";
-const Users = () => {
+const Roles = () => {
     return (
         <div>
-            <DashboardTitle>Users</DashboardTitle>
+            <DashboardTitle>Roles</DashboardTitle>
             <div className="main-wrapper">
 
                 <section className="py-1 ">
@@ -16,13 +16,10 @@ const Users = () => {
                                     <thead>
                                         <tr>
                                             <th className="px-6   text-blueGray-500 align-middle border border-solid border-base-3 py-3 text-sm uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
-                                                User name
+                                                Name
                                             </th>
                                             <th className="px-6  text-blueGray-500 align-middle border border-solid border-base-3 py-3 text-sm uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
-                                                email
-                                            </th>
-                                            <th className="px-6  text-blueGray-500 align-middle border border-solid border-base-3 py-3 text-sm uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
-                                                Roles
+                                                Permissions
                                             </th>
                                             <th className="px-6  text-blueGray-500 align-middle border border-solid border-base-3 py-3 text-sm uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
                                                 Action
@@ -33,21 +30,14 @@ const Users = () => {
                                     <tbody>
                                         <tr>
                                             <th className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-sm whitespace-nowrap p-4 text-left text-blueGray-700 ">
-                                                Ahon khan
+                                                <div className="center relative inline-block select-none whitespace-nowrap rounded-lg bg-secondary py-1.5 px-1.5 align-baseline font-sans text-[10px] font-bold uppercase leading-none text-white">
+                                                    Writer
+                                                </div>
                                             </th>
                                             <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-sm whitespace-nowrap p-4 ">
-                                                ahon@gmail.com
+                                                48
                                             </td>
-                                            <td className="border-t-0 px-6 align-center border-l-0 border-r-0 text-sm whitespace-nowrap p-4">
-                                                <div className="flex flex-wrap gap-x-1 gap-y-1">
-                                                    <div className="center relative inline-block select-none whitespace-nowrap rounded-lg bg-secondary py-1.5 px-1.5 align-baseline font-sans text-[10px] font-bold uppercase leading-none text-white">
-                                                        Admin
-                                                    </div>
-                                                    <div className="center relative inline-block select-none whitespace-nowrap rounded-lg bg-secondary py-1.5 px-1.5 align-baseline font-sans text-[10px] font-bold uppercase leading-none text-white">
-                                                        Writer
-                                                    </div>
-                                                </div>
-                                            </td>
+
                                             <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-sm whitespace-nowrap p-4">
                                                 <button className='text-xl'>
                                                     <BiEdit />
@@ -69,4 +59,4 @@ const Users = () => {
     )
 }
 
-export default Users
+export default Roles

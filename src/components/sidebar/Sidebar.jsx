@@ -1,7 +1,7 @@
 "use client"
 import Link from 'next/link'
 import React from 'react'
-import { FaRegAddressCard, FaRegCircle, FaRegUser, FaUser } from 'react-icons/fa6';
+import { FaCcMastercard, FaRegAddressCard, FaRegCircle, FaRegUser, FaUser } from 'react-icons/fa6';
 import { LuPackageOpen } from "react-icons/lu";
 import { FaRegFileAlt, FaSignOutAlt } from "react-icons/fa";
 import { LiaPassportSolid } from "react-icons/lia";
@@ -29,6 +29,16 @@ const Sidebar = () => {
             , hasSubmenu: true, roles: ['user'],
             subMenu: [
                 { name: "Identity", path: '/dashboard/identity', permissions: ['identity-control'], icon: <FaRegAddressCard /> },
+
+            ]
+        },
+        {
+            name: "Wallet", path: '/dashboard/wallet', permissions:
+                ['identity-control']
+
+            , hasSubmenu: true, roles: ['user', 'admin'],
+            subMenu: [
+                { name: "Wallet", path: '/dashboard/wallet', permissions: ['wallet-control'], icon: <FaCcMastercard /> },
 
             ]
         },
@@ -108,7 +118,7 @@ const MenuItem = ({ index, item }) => {
                 {
                     item.subMenu.map((sItem, sIndex) =>
 
-                        <Link href={sItem.path} className={`relative flex ${pathName === sItem.path && "!text-gray-800 !bg-gray-50 !border-indigo-500"} flex-row items-center h-11 focus:outline-none  text-gray-600 hover:text-gray-800 hover:bg-gray-50 hover:border-indigo-500 border-l-4 border-transparent  pr-6`}>
+                        <Link key={sIndex} href={sItem.path} className={`relative flex ${pathName === sItem.path && "!text-gray-800 !bg-gray-50 !border-indigo-500"} flex-row items-center h-11 focus:outline-none  text-gray-600 hover:text-gray-800 hover:bg-gray-50 hover:border-indigo-500 border-l-4 border-transparent  pr-6`}>
                             <span className="inline-flex justify-center items-center ml-4">
                                 {sItem.icon}
                             </span>

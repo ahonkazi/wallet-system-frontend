@@ -1,15 +1,16 @@
 import DashboardHeader from '@/components/header/DashboardHeader'
 import Sidebar from '@/components/sidebar/Sidebar'
+import WithAuth from '@/utils/wrapper/WithAuth'
 import React from 'react'
 
 const DashboardLayoutWrapper = ({ children }) => {
     return (
         <div>
-            <div class="min-h-screen flex flex-col text-dark flex-auto flex-shrink-0 antialiased ">
+            <div className="min-h-screen flex flex-col text-dark flex-auto flex-shrink-0 antialiased ">
                 <Sidebar />
                 <DashboardHeader />
                 <div>
-                    <div class="flex pt-14 pl-64 flex-col text-dark flex-auto flex-shrink-0 antialiased ">
+                    <div className="flex pt-14 pl-64 pb-14 flex-col text-dark flex-auto flex-shrink-0 antialiased ">
                         <div className="p-8">
                             {children}
                         </div>

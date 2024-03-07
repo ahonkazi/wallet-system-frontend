@@ -1,11 +1,14 @@
 import AuthLayoutWrapper from '@/layouts/AuthLayoutWrapper';
+import AuthLess from '@/utils/wrapper/AuthLess';
 import React from 'react'
 
 const AuthLayout = ({ children }) => {
     return (
-        <AuthLayoutWrapper>
-            {children}
-        </AuthLayoutWrapper>
+        <AuthLess>
+            <AuthLayoutWrapper>
+                {children}
+            </AuthLayoutWrapper>
+        </AuthLess>
     )
 }
 
