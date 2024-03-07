@@ -2,6 +2,7 @@ import DashboardHeader from '@/components/header/DashboardHeader'
 import Sidebar from '@/components/sidebar/Sidebar'
 import WithAuth from '@/utils/wrapper/WithAuth'
 import React from 'react'
+import '../app/app.css';
 
 const DashboardLayoutWrapper = ({ children }) => {
     return (

@@ -1,10 +1,50 @@
+"use client"
 import { ButtonPrimary } from '@/components/buttons/Buttons'
-import Header from '@/components/header/Header'
 import { InputField } from '@/components/input-fields/InputField'
+import authApiSlice from '@/redux/features/auth/authApiSlice'
+import { throwError } from '@/utils/message/message'
+import { setCookie } from 'cookies-next'
 import Link from 'next/link'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 
 const LoginPage = () => {
+    const [email, setEmail] = useState('')
+    const [password, setPassword] = useState('')
+    const [login, { data, isLoading, isSuccess, isError, error }] = authApiSlice.useLoginMutation();
+    const LoginHandle = () => {
+        if (email && password) {
+            login({ email: email, password: password })
+        }
+    }
+
+    useEffect(() => {
+        if (isSuccess) {
+            console.log(data);
+            setCookie('token', data.token, { maxAge: 60 * 60 * 12 * 7 });
+            if (typeof location !== 'undefined') {
+                location.replace('/dashboard')
+            }
+        }
+        if (isError) {
+            console.log(error)
+            if (error.status === 422) {
+                // console.log(error.data.errors.email)
+                if (error.data.errors.email) {
+                    throwError('error', error.data.errors.email[0])
+                }
+                if (error.data.errors.password) {
+                    throwError('error', error.data.errors.password[0])
+                }
+            }
+            if ((error.status === 404) || (error.status === 401)) {
+                if (error.data.message) {
+                    throwError('error', error.data.message)
+                }
+
+            }
+
+        }
+    }, [isLoading])
     return (
         <div className="">
             <div className='app-container mt-page'>
@@ -14,12 +54,11 @@ const LoginPage = () => {
                             <h5>Welcome back</h5>
                         </div>
                         <form action="" className='mt-4 flex gap-y-5 flex-col'>
-
-                            <InputField label={'Your Email'} />
-                            <InputField label={'Your Password'} />
+                            <InputField type='text' value={email} setValue={setEmail} label={'Your Email'} />
+                            <InputField type='password' value={password} setValue={setPassword} label={'Your Password'} />
 
                             <div className="input-item">
-                                <ButtonPrimary fullwidth={true}>Login</ButtonPrimary>
+                                <ButtonPrimary disabled={isLoading} type="button" onClick={() => LoginHandle()} fullwidth={true}>{isLoading ? 'Loading...' : 'Login'}</ButtonPrimary>
                             </div>
                             <div className="form-footer">
                                 <div className="input-item flex gap-x-2">

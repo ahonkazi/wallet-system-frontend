@@ -3,6 +3,7 @@ import userApiSlice from '@/redux/features/user/userApiSlice'
 import { addUser } from '@/redux/features/user/userSlice'
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import '../app/app.css';
 
 const MainLayout = ({ children }) => {
     const { data, isLoading, isSuccess, isError, error } = userApiSlice.useGetUserSettingsQuery();
