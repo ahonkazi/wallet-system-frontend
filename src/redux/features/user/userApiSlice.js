@@ -14,8 +14,33 @@ const userApiSlice = createApi({
     endpoints: builder => ({
         getUserSettings: builder.query({
             query: () => '/settings'
-        })
-    })
+        }),
+        logout: builder.mutation({
+            query: () => ({
+                url: '/logout',
+                method: 'POST',
+            })
+        }),
+        order: builder.mutation({
+            query: ({ package_id, success_url, cancel_url }) => ({
+                url: '/order',
+                method: 'POST',
+                body: {
+                    package_id: package_id, success_url: success_url, cancel_url: cancel_url
+                }
+            })
+        }),
+        verifyOrder: builder.mutation({
+            query: ({ order_id, session_id }) => ({
+                url: '/verify-order',
+                method: 'POST',
+                body: {
+                    order_id: order_id, session_id: session_id
+                }
+            })
+        }),
+    }),
+
 })
 
 export default userApiSlice;

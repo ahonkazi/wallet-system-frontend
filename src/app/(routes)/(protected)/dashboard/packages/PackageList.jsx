@@ -1,8 +1,8 @@
-"use client"
 import { PackageCard } from '@/components/cards/PackageCard';
 import publicApiSlice from '@/redux/features/public/publicApiSlice';
 import React from 'react'
-const HomePage = () => {
+
+const PackageList = () => {
     const { data, isLoading, isSuccess, isError } = publicApiSlice.useGetPackagesQuery();
     let content =
         <div className='flex justify-center'>
@@ -32,16 +32,13 @@ const HomePage = () => {
                 <h3>Something went wrong</h3>
             </div>
     }
+
     return (
-        <div className='app-container mt-page'>
-            <div className="section-title">
-                <p className='font-base-2'>Our available packages</p>
-            </div>
-            <div className="">
-                {content}
-            </div>
+
+        <div className="">
+            {content}
         </div>
     )
 }
 
-export default HomePage
+export default PackageList

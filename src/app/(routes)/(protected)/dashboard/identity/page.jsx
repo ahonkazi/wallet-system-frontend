@@ -1,3 +1,4 @@
+"use client"
 import { ButtonPrimary } from '@/components/buttons/Buttons'
 import { InputField } from '@/components/input-fields/InputField'
 import { DashboardTitle } from '@/components/typography/Typography'

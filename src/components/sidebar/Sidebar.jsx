@@ -1,61 +1,58 @@
 "use client"
 import Link from 'next/link'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { FaCcMastercard, FaRegAddressCard, FaRegCircle, FaRegUser, FaUser } from 'react-icons/fa6';
 import { LuPackageOpen } from "react-icons/lu";
 import { FaRegFileAlt, FaSignOutAlt } from "react-icons/fa";
-import { LiaPassportSolid } from "react-icons/lia";
 import { MdOutlineSecurity } from 'react-icons/md';
 import { usePathname } from 'next/navigation';
+import { useSelector } from 'react-redux';
+import userApiSlice from '@/redux/features/user/userApiSlice';
 const Sidebar = () => {
+    const user = useSelector(state => state.user);
+    const [logout, { isLoading, isSuccess, isError, error }] = userApiSlice.useLogoutMutation();
+
     const menuList = [
-        { name: "Orders", path: '/dashboard/orders', permissions: ['package-controll'], icon: <LuPackageOpen />, hasSubmenu: false },
-        { name: "Packages", path: '/dashboard/packages', permissions: ['show-order'], icon: <FaRegFileAlt /> },
-        {
-            name: "User & role management", path: '/dashboard/users', permissions:
-                ['role-control', 'user-control']
-            , hasSubmenu: true,
-            subMenu: [
-                { name: "Users", path: '/dashboard/users', permissions: ['user-controll'], icon: <FaRegUser /> },
-                { name: "Roles", path: '/dashboard/roles', permission: ['role-controll'], icon: <FaRegCircle /> },
-                { name: "Permissions", path: '/dashboard/permissions', permission: ['permission-controll'], icon: <MdOutlineSecurity /> },
+        { name: "Orders", path: '/dashboard/orders', permission: 'order-list', icon: <LuPackageOpen />, hasSubmenu: false },
+        { name: "Packages", path: '/dashboard/packages', permission: 'package-list', icon: <FaRegFileAlt /> },
+        { name: "Users", path: '/dashboard/users', permission: 'user-list', icon: <FaRegUser /> },
+        { name: "Roles", path: '/dashboard/roles', permission: 'role-list', icon: <FaRegCircle /> },
+        { name: "Permissions", path: '/dashboard/permissions', permission: 'permission-list', icon: <MdOutlineSecurity /> },
 
-            ]
-        },
         {
-            name: "Identity", path: '/dashboard/users', permissions:
-                ['identity-control']
-
-            , hasSubmenu: true, roles: ['user'],
-            subMenu: [
-                { name: "Identity", path: '/dashboard/identity', permissions: ['identity-control'], icon: <FaRegAddressCard /> },
-
-            ]
-        },
-        {
-            name: "Wallet", path: '/dashboard/wallet', permissions:
-                ['identity-control']
+            name: "Wallet", path: '/dashboard/wallet', permission: 'wallet-list'
 
             , hasSubmenu: true, roles: ['user', 'admin'],
             subMenu: [
-                { name: "Wallet", path: '/dashboard/wallet', permissions: ['wallet-control'], icon: <FaCcMastercard /> },
+                { name: "Wallet", path: '/dashboard/wallet', permission: 'wallet-list', icon: <FaCcMastercard /> },
 
             ]
         },
-        {
-            name: "Settings", path: '/dashboard/settings', permissions:
-                ['settings']
 
+        {
+            name: "Settings", path: '/dashboard/settings', permission: 'user-settings'
             , hasSubmenu: true, roles: ['users'],
             subMenu: [
-                { name: "Profile", path: '/dashboard/edit', permissions: ['identity-control'], icon: <FaUser /> },
+                { name: "Profile", path: '/dashboard/edit', permission: ['identity-control'], icon: <FaUser /> },
             ]
         },
 
 
 
     ]
-
+    const handleLogout = () => {
+        logout();
+    }
+    useEffect(() => {
+        if (isSuccess) {
+            if (typeof location !== 'undefined') {
+                location.replace('/');
+            }
+        }
+        if (isError) {
+            console.log(error)
+        }
+    }, [isLoading])
     const pathName = usePathname();
     return (
         <aside>
@@ -86,8 +83,20 @@ const Sidebar = () => {
                             )
                         }
 
+                        {user.data.can_see_identity_section && (
+                            <Link href={'/dashboard/identity'}>
+                                <button className="relative flex flex-row items-center h-11 focus:outline-none hover:bg-gray-50 text-gray-600 hover:text-gray-800 border-l-4 border-transparent hover:border-indigo-500 pr-6">
+                                    <span className="inline-flex justify-center items-center ml-4">
+                                        <FaRegAddressCard />
+                                    </span>
+                                    <span className="ml-2 text-sm tracking-wide truncate">Identity</span>
+                                </button>
+                            </Link>
+                        )}
+
+
                         <li>
-                            <button className="relative flex flex-row items-center h-11 focus:outline-none hover:bg-gray-50 text-gray-600 hover:text-gray-800 border-l-4 border-transparent hover:border-indigo-500 pr-6">
+                            <button onClick={handleLogout} className="relative flex flex-row items-center h-11 focus:outline-none hover:bg-gray-50 text-gray-600 hover:text-gray-800 border-l-4 border-transparent hover:border-indigo-500 pr-6">
                                 <span className="inline-flex justify-center items-center ml-4">
                                     <FaSignOutAlt />
                                 </span>
@@ -105,39 +114,42 @@ const Sidebar = () => {
 export default Sidebar
 
 const MenuItem = ({ index, item }) => {
+    const user = useSelector(state => state.user);
     const pathName = usePathname();
+    if (user.data.permissions.includes(item.permission)) {
+        return (
+            item.hasSubmenu ?
+                <li key={index} className="px-5">
 
-    return (
-        item.hasSubmenu ?
-            <li key={index} className="px-5">
+                    <div className="flex flex-row items-center h-8">
+                        <div className="text-sm font-light tracking-wide text-gray-500">{item.name}</div>
+                    </div>
 
-                <div className="flex flex-row items-center h-8">
-                    <div className="text-sm font-light tracking-wide text-gray-500">{item.name}</div>
-                </div>
+                    {
+                        item.subMenu.map((sItem, sIndex) =>
 
-                {
-                    item.subMenu.map((sItem, sIndex) =>
+                            <Link key={sIndex} href={sItem.path} className={`relative flex ${pathName === sItem.path && "!text-gray-800 !bg-gray-50 !border-indigo-500"} flex-row items-center h-11 focus:outline-none  text-gray-600 hover:text-gray-800 hover:bg-gray-50 hover:border-indigo-500 border-l-4 border-transparent  pr-6`}>
+                                <span className="inline-flex justify-center items-center ml-4">
+                                    {sItem.icon}
+                                </span>
+                                <span className="ml-2 text-sm tracking-wide truncate">{sItem.name}</span>
+                            </Link>
 
-                        <Link key={sIndex} href={sItem.path} className={`relative flex ${pathName === sItem.path && "!text-gray-800 !bg-gray-50 !border-indigo-500"} flex-row items-center h-11 focus:outline-none  text-gray-600 hover:text-gray-800 hover:bg-gray-50 hover:border-indigo-500 border-l-4 border-transparent  pr-6`}>
-                            <span className="inline-flex justify-center items-center ml-4">
-                                {sItem.icon}
-                            </span>
-                            <span className="ml-2 text-sm tracking-wide truncate">{sItem.name}</span>
-                        </Link>
+                        )
+                    }
+                </li>
+                :
+                <li key={index}>
+                    <Link href={item.path} className={`relative flex ${pathName === item.path && "!text-gray-800 !bg-gray-50 !border-indigo-500"} flex-row items-center h-11 focus:outline-none  text-gray-600 hover:text-gray-800 hover:bg-gray-50 hover:border-indigo-500 border-l-4 border-transparent  pr-6`}>
+                        <span className="inline-flex justify-center items-center ml-4">
+                            {item.icon}
+                        </span>
+                        <span className="ml-2 text-sm tracking-wide truncate">{item.name}</span>
+                        <span className="px-2 py-0.5 ml-auto text-xs font-medium tracking-wide text-red-500 bg-red-50 rounded-full">1.2k</span>
+                    </Link>
+                </li>
+        )
 
-                    )
-                }
-            </li>
-            :
-            <li key={index}>
-                <Link href={item.path} className={`relative flex ${pathName === item.path && "!text-gray-800 !bg-gray-50 !border-indigo-500"} flex-row items-center h-11 focus:outline-none  text-gray-600 hover:text-gray-800 hover:bg-gray-50 hover:border-indigo-500 border-l-4 border-transparent  pr-6`}>
-                    <span className="inline-flex justify-center items-center ml-4">
-                        {item.icon}
-                    </span>
-                    <span className="ml-2 text-sm tracking-wide truncate">{item.name}</span>
-                    <span className="px-2 py-0.5 ml-auto text-xs font-medium tracking-wide text-red-500 bg-red-50 rounded-full">1.2k</span>
-                </Link>
-            </li>
-    )
+    }
 
 }

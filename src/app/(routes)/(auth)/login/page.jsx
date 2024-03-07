@@ -3,7 +3,7 @@ import { ButtonPrimary } from '@/components/buttons/Buttons'
 import { InputField } from '@/components/input-fields/InputField'
 import authApiSlice from '@/redux/features/auth/authApiSlice'
 import { throwError } from '@/utils/message/message'
-import { setCookie } from 'cookies-next'
+import { getCookie, setCookie } from 'cookies-next'
 import Link from 'next/link'
 import React, { useEffect, useState } from 'react'
 
@@ -19,14 +19,17 @@ const LoginPage = () => {
 
     useEffect(() => {
         if (isSuccess) {
-            console.log(data);
             setCookie('token', data.token, { maxAge: 60 * 60 * 12 * 7 });
             if (typeof location !== 'undefined') {
-                location.replace('/dashboard')
+                if (getCookie('last_url')) {
+                    location.replace(getCookie('last_url'))
+                } else {
+                    location.replace('/dashboard')
+
+                }
             }
         }
         if (isError) {
-            console.log(error)
             if (error.status === 422) {
                 // console.log(error.data.errors.email)
                 if (error.data.errors.email) {

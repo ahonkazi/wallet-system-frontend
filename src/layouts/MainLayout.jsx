@@ -13,7 +13,6 @@ const MainLayout = ({ children }) => {
     useEffect(() => {
         if (isSuccess) {
             dispatch(addUser(data))
-            console.log(data)
         }
         if (isError) {
             dispatch(addUser(null))

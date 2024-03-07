@@ -17,7 +17,15 @@ const authApiSlice = createApi({
                 method: 'POST',
                 body: { email: email, password: password }
             })
-        })
+        }),
+        register: builder.mutation({
+            query: ({ email, password, name }) => ({
+                url: '/register',
+                method: 'POST',
+                body: { email: email, password: password, name: name }
+            })
+        }),
+
     })
 })
 
