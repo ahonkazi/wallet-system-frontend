@@ -19,6 +19,25 @@ const adminApiSlice = createApi({
                 body: data
             })
         }),
+        getAllUsers: builder.mutation({
+            query: () => ({
+                url: '/users',
+                method: 'GET',
+            })
+        }),
+        getAllRoles: builder.mutation({
+            query: () => ({
+                url: '/roles',
+                method: 'GET',
+            })
+        }),
+        assignRoles: builder.mutation({
+            query: ({ user_id, role_names }) => ({
+                url: '/assign-role',
+                method: 'POST',
+                body: { user_id, role_names }
+            })
+        }),
 
 
 

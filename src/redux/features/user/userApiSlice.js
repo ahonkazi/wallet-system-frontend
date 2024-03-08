@@ -90,6 +90,51 @@ const userApiSlice = createApi({
             })
         }),
 
+        // identify
+
+        getNidInformation: builder.mutation({
+            query: () => ({
+                url: '/identity/nid-information',
+                method: 'GET',
+            })
+        }),
+
+        createNIDInformation: builder.mutation({
+            query: ({ name, father_name, mother_name, date_of_birth, nid_number }) => ({
+                url: '/identity/nid-information',
+                method: 'POST',
+                body: { name, father_name, mother_name, date_of_birth, nid_number }
+            })
+        }),
+        editNIDInformation: builder.mutation({
+            query: ({ name, father_name, mother_name, date_of_birth, nid_number, id }) => ({
+                url: '/identity/nid-information/' + id,
+                method: 'PATCH',
+                body: { name, father_name, mother_name, date_of_birth, nid_number }
+            })
+        }),
+        getPassportInformation: builder.mutation({
+            query: () => ({
+                url: '/identity/passport-information',
+                method: 'GET',
+            })
+        }),
+
+        createPassportInformation: builder.mutation({
+            query: ({ passport_number, exp_date, country }) => ({
+                url: '/identity/passport-information',
+                method: 'POST',
+                body: { passport_number, exp_date, country }
+            })
+        }),
+        editPassportInformation: builder.mutation({
+            query: ({ passport_number, exp_date, country, id }) => ({
+                url: '/identity/passport-information/' + id,
+                method: 'PATCH',
+                body: { passport_number, exp_date, country }
+            })
+        }),
+
 
     }),
 

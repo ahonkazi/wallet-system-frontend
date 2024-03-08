@@ -82,16 +82,16 @@ const Sidebar = () => {
                             )
                         }
 
-                        {user.data.can_see_identity_section && (
-                            <Link href={'/dashboard/identity'}>
-                                <button className="relative flex flex-row items-center h-11 focus:outline-none hover:bg-gray-50 text-gray-600 hover:text-gray-800 border-l-4 border-transparent hover:border-indigo-500 pr-6">
+                        <li>
+                            {user.data.can_see_identity_section && (
+                                <Link href={'/dashboard/identity'} className={`relative flex ${pathName === '/dashboard/identity' && "!text-gray-800 !bg-gray-50 !border-indigo-500"} flex-row items-center h-11 focus:outline-none  text-gray-600 hover:text-gray-800 hover:bg-gray-50 hover:border-indigo-500 border-l-4 border-transparent  pr-6`}>
                                     <span className="inline-flex justify-center items-center ml-4">
                                         <FaRegAddressCard />
                                     </span>
                                     <span className="ml-2 text-sm tracking-wide truncate">Identity</span>
-                                </button>
-                            </Link>
-                        )}
+                                </Link>
+                            )}
+                        </li>
 
 
                         <li>
@@ -118,11 +118,11 @@ const MenuItem = ({ index, item }) => {
     if (user.data.permissions.includes(item.permission)) {
         return (
             item.hasSubmenu ?
-                <li key={index} className="px-5">
+                <li key={index} className="">
 
-                    <div className="flex flex-row items-center h-8">
+                    {/* <div className="flex flex-row px-5 items-center h-8">
                         <div className="text-sm font-light tracking-wide text-gray-500">{item.name}</div>
-                    </div>
+                    </div> */}
 
                     {
                         item.subMenu.map((sItem, sIndex) =>
