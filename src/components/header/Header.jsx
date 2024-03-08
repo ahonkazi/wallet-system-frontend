@@ -3,7 +3,10 @@ import Link from 'next/link'
 import React from 'react'
 import { MdOutlineDashboard } from "react-icons/md";
 import { ButtonPrimary } from '../buttons/Buttons';
+import { useSelector } from 'react-redux';
 const Header = () => {
+    const authUser = useSelector(state => state.user);
+
     const menuItems = [
         { path: '/', name: 'Home' },
         { path: '/', name: 'About' },
@@ -31,11 +34,18 @@ const Header = () => {
                                 Dashboard
                             </Link>
                         </li> */}
-                        <li className='flex items-center'>
-                            <Link href={'/dashboard'} className='flex btn-primary items-center gap-x-2'>
-                                <ButtonPrimary>Dashboard</ButtonPrimary>
-                            </Link>
-                        </li>
+                        {
+                            authUser.data ? <li className='flex items-center'>
+                                <Link href={'/dashboard'} className='flex btn-primary items-center gap-x-2'>
+                                    <ButtonPrimary>Dashboard</ButtonPrimary>
+                                </Link>
+                            </li>
+                                : <li className='flex items-center'>
+                                    <Link href={'/login'} className='flex btn-primary items-center gap-x-2'>
+                                        <ButtonPrimary>Login</ButtonPrimary>
+                                    </Link>
+                                </li>
+                        }
 
                     </ul>
                 </menu>

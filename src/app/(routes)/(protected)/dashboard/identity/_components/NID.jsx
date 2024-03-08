@@ -4,7 +4,10 @@ import { InputField } from '@/components/input-fields/InputField'
 import userApiSlice from '@/redux/features/user/userApiSlice'
 import { throwError } from '@/utils/message/message'
 import { isNumeric, range } from '@/utils/util'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
+import { LuDownload } from 'react-icons/lu';
+import html2pdf from 'html2pdf.js'
+import { nidCard } from '@/components/designs/cards'
 
 const CardInfo = () => {
     const [load, { data, isLoading, isSuccess, isError, error }] = userApiSlice.useGetNidInformationMutation();
@@ -16,6 +19,21 @@ const CardInfo = () => {
     const [mother_name, setMotherName] = useState('');
     const [date_of_birth, setDateOfBirth] = useState('');
     const [nid_number, setNIDNumber] = useState('');
+    const options = {
+        filename: 'my-nid.pdf',
+        margin: 1,
+        image: { type: 'jpeg', quality: 0.98 },
+        html2canvas: { scale: 2 },
+        jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' },
+    };
+    const contentRef = useRef(null);
+
+    const convertToPdf = () => {
+        const content = nidCard({ name, father_name, mother_name, nid_number, date_of_birth });
+        if (nid) {
+            html2pdf().set(options).from(content).save();
+        }
+    };
     //create a new account
     const handleCreate = () => {
         if (name && father_name && mother_name && date_of_birth && nid_number) {
@@ -58,16 +76,18 @@ const CardInfo = () => {
 
     let content = 'loading...'
     if (isSuccess) {
-        content = <div className="inner-wrapper mt-5">
+        content = <div ref={contentRef} className="inner-wrapper mt-5">
             <form>
-                <div className="input-group grid grid-cols-1 md:grid-cols-2 gap-y-8 gap-x-8">
-                    <InputField value={name} setValue={setName} label={'Your name'} />
-                    <InputField value={nid_number} setValue={setNIDNumber} label={'NID number'} />
-                </div>
-                <div className="input-group mt-8 grid grid-cols-1 md:grid-cols-3 gap-y-8 gap-x-8">
-                    <InputField value={father_name} setValue={setFatherName} label={"Father's name"} />
-                    <InputField value={mother_name} setValue={setMotherName} label={"Mother's name"} />
-                    <InputField value={date_of_birth} setValue={setDateOfBirth} placeholder='year-month-day' label={'Date of birth'} />
+                <div className="">
+                    <div className="input-group grid grid-cols-1 md:grid-cols-2 gap-y-8 gap-x-8">
+                        <InputField value={name} setValue={setName} label={'Your name'} />
+                        <InputField value={nid_number} setValue={setNIDNumber} label={'NID number'} />
+                    </div>
+                    <div className="input-group mt-8 grid grid-cols-1 md:grid-cols-3 gap-y-8 gap-x-8">
+                        <InputField value={father_name} setValue={setFatherName} label={"Father's name"} />
+                        <InputField value={mother_name} setValue={setMotherName} label={"Mother's name"} />
+                        <InputField value={date_of_birth} setValue={setDateOfBirth} placeholder='year-month-day' label={'Date of birth'} />
+                    </div>
                 </div>
                 <div className="flex mt-8 justify-end">
                     {
@@ -128,8 +148,13 @@ const CardInfo = () => {
         <div>
             <div className="Wallet-wrapper mt-wrapper">
                 <div className="bg-base-1 p-8">
-                    <h4>NID information</h4>
-                    {content}
+                    <div className="flex items-center gap-x-4">
+                        <h4>NID information</h4>
+                        <button onClick={convertToPdf} className='text-xl text-dark'><LuDownload /></button>
+                    </div>
+                    <div className="">
+                        {content}
+                    </div>
                 </div>
             </div>
         </div>

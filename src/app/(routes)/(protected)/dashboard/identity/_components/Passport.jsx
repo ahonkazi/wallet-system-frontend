@@ -1,10 +1,13 @@
 "use client"
 import { ButtonPrimary } from '@/components/buttons/Buttons'
+import { passportCard } from '@/components/designs/cards'
 import { InputField } from '@/components/input-fields/InputField'
 import userApiSlice from '@/redux/features/user/userApiSlice'
 import { throwError } from '@/utils/message/message'
-import { isNumeric, range } from '@/utils/util'
-import React, { useEffect, useState } from 'react'
+import { generatePDFWithHTML, isNumeric, range } from '@/utils/util'
+import html2pdf from 'html2pdf.js';
+import React, { useEffect, useRef, useState } from 'react'
+import { LuDownload } from 'react-icons/lu'
 // passport_number, exp_date, country
 const PassportInfo = () => {
     const [load, { data, isLoading, isSuccess, isError, error }] = userApiSlice.useGetPassportInformationMutation();
@@ -14,7 +17,20 @@ const PassportInfo = () => {
     const [passport_number, setPassportNumber] = useState('');
     const [exp_date, setExpDate] = useState('');
     const [country, setCountry] = useState('');
-    //create a new account
+    const options = {
+        filename: 'my-passport.pdf',
+        margin: 1,
+        image: { type: 'jpeg', quality: 0.98 },
+        html2canvas: { scale: 2 },
+        jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' },
+    };
+    const convertToPdf = async () => {
+        const content = passportCard({ passport_number, exp_date, country });
+        if (passport) {
+            html2pdf().set(options).from(content).save();
+        }
+    };
+
     const handleCreate = () => {
         if (passport_number && exp_date && country) {
             if (isNumeric(passport_number)) {
@@ -118,7 +134,10 @@ const PassportInfo = () => {
         <div>
             <div className="Wallet-wrapper mt-wrapper">
                 <div className="bg-base-1 p-8">
-                    <h4>Passport information</h4>
+                    <div className="flex items-center gap-x-4">
+                        <h4>Passport information</h4>
+                        <button onClick={() => convertToPdf()} className='text-xl text-dark'><LuDownload /></button>
+                    </div>
                     {content}
                 </div>
             </div>
