@@ -40,6 +40,56 @@ const userApiSlice = createApi({
                 }
             })
         }),
+        editUserInformation: builder.mutation({
+            query: ({ name, phone, gender, date_of_birth }) => ({
+                url: '/basic-information',
+                method: 'PATCH',
+                body: { name: name, phone: phone, gender: gender, date_of_birth: date_of_birth }
+            })
+        }),
+        getBankAccount: builder.mutation({
+            query: () => ({
+                url: '/wallet/bank-accounts',
+                method: 'GET',
+            })
+        }),
+
+        createBankAccount: builder.mutation({
+            query: ({ account_number, bank_ifsc, account_type, account_name }) => ({
+                url: '/wallet/bank-accounts',
+                method: 'POST',
+                body: { account_number, bank_ifsc, account_type, account_name }
+            })
+        }),
+        editBankAccount: builder.mutation({
+            query: ({ account_number, bank_ifsc, account_type, account_name, id }) => ({
+                url: '/wallet/bank-accounts/' + id,
+                method: 'PATCH',
+                body: { account_number, bank_ifsc, account_type, account_name }
+            })
+        }),
+        getCardAccount: builder.mutation({
+            query: () => ({
+                url: '/wallet/card-accounts',
+                method: 'GET',
+            })
+        }),
+
+        createCardAccount: builder.mutation({
+            query: ({ card_number, exp_month, exp_year, cvv, card_holder_name }) => ({
+                url: '/wallet/card-accounts',
+                method: 'POST',
+                body: { card_number, exp_month, exp_year, cvv, card_holder_name }
+            })
+        }),
+        editCardAccount: builder.mutation({
+            query: ({ card_number, exp_month, exp_year, cvv, card_holder_name, id }) => ({
+                url: '/wallet/card-accounts/' + id,
+                method: 'PATCH',
+                body: { card_number, exp_month, exp_year, cvv, card_holder_name }
+            })
+        }),
+
 
     }),
 
