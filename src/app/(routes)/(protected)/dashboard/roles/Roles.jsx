@@ -15,6 +15,9 @@ const Roles = () => {
     const [editModalStatus, setEditModalStatus] = useState(false);
     const [role, setRole] = useState(false);
     const [roleList, setRoleList] = useState([]);
+    const user = useSelector(state => state.user)
+    const permission_to_create = user.data?.permissions?.includes('role-create');
+
     useEffect(() => {
         load();
     }, [])
@@ -58,7 +61,9 @@ const Roles = () => {
 
             <div className="flex justify-between items-center">
                 <DashboardTitle>Roles</DashboardTitle>
-                <ButtonPrimary onClick={() => setaddModalStatus(true)}>Add new Role</ButtonPrimary>
+                {permission_to_create && (
+                    <ButtonPrimary onClick={() => setaddModalStatus(true)}>Add new Role</ButtonPrimary>
+                )}
             </div>
 
             <div className="main-wrapper">
@@ -72,7 +77,7 @@ const Roles = () => {
 
                 </section>
             </div>
-        </div>
+        </div >
     )
 }
 

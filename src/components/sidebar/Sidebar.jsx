@@ -12,11 +12,11 @@ const Sidebar = () => {
     const user = useSelector(state => state.user);
     const [logout, { isLoading, isSuccess, isError, error }] = userApiSlice.useLogoutMutation();
     const menuList = [
-        { name: "Orders", path: '/dashboard/orders', permission: 'order-list', icon: <LuPackageOpen />, hasSubmenu: false },
+        // { name: "Orders", path: '/dashboard/orders', permission: 'order-list', icon: <LuPackageOpen />, hasSubmenu: false },
         { name: "Packages", path: '/dashboard/packages', permission: 'package-list', icon: <FaRegFileAlt /> },
         { name: "Users", path: '/dashboard/users', permission: 'user-list', icon: <FaRegUser /> },
         { name: "Roles", path: '/dashboard/roles', permission: 'role-list', icon: <FaRegCircle /> },
-        { name: "Permissions", path: '/dashboard/permissions', permission: 'permission-list', icon: <MdOutlineSecurity /> },
+        // { name: "Permissions", path: '/dashboard/permissions', permission: 'permission-list', icon: <MdOutlineSecurity /> },
 
         {
             name: "Wallet", path: '/dashboard/wallet', permission: 'wallet-list'
@@ -32,7 +32,7 @@ const Sidebar = () => {
             name: "Settings", path: '/dashboard/settings', permission: 'user-settings'
             , hasSubmenu: true, roles: ['users'],
             subMenu: [
-                { name: "Profile", path: '/dashboard/edit', permission: ['identity-control'], icon: <FaUser /> },
+                { name: "Profile", path: '/dashboard/edit', permission: ['edit-user'], icon: <FaUser /> },
             ]
         },
 
